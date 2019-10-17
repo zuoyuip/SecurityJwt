@@ -1,6 +1,11 @@
 package org.zuoyu.security.model;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,13 +17,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
- * 用户.
+ * JWT用户.
  *
  * @author zuoyu
  * @program jwt
- * @create 2019-10-15 22:09
+ * @create 2019-10-15 22:31
  **/
 @Entity
 @Data
@@ -26,7 +34,9 @@ import lombok.experimental.Accessors;
 @Table(name = "`TB_USER`")
 @NoArgsConstructor
 @AllArgsConstructor
-public class User implements Serializable {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class User implements UserDetails {
+
 
   private static final long serialVersionUID = 1L;
 
@@ -35,9 +45,11 @@ public class User implements Serializable {
   @Column(name = "USER_ID")
   private Integer userId;
 
+  @JsonProperty("username")
   @Column(name = "USER_NAME")
   private String userName;
 
+  @JsonIgnore
   @Column(name = "PASS_WORD")
   private String passWord;
 
@@ -50,11 +62,42 @@ public class User implements Serializable {
   @Transient
   private boolean rememberMe;
 
-  public User(Integer userId, String userName, String passWord, Boolean userStatus, String roles) {
-    this.userId = userId;
-    this.userName = userName;
-    this.passWord = passWord;
-    this.userStatus = userStatus;
-    this.roles = roles;
+  @JsonIgnore
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    String spacer = ",";
+    return Arrays.stream(this.roles.split(spacer))
+        .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+        .collect(Collectors.toList());
+  }
+
+  @Override
+  public String getPassword() {
+    return this.passWord;
+  }
+
+  @Override
+  public String getUsername() {
+    return this.userName;
+  }
+
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
+  }
+
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return this.userStatus;
   }
 }

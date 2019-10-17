@@ -25,6 +25,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.web.cors.CorsUtils;
 import org.zuoyu.security.constants.JwtConstants;
+import org.zuoyu.security.filter.JwtAuthorizationFilter;
 import org.zuoyu.security.handler.AuthenticationFailureHandlerImpl;
 import org.zuoyu.security.handler.AuthenticationSuccessHandlerImpl;
 
@@ -67,9 +68,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .requestCache().disable()
         .authorizeRequests()
         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-        .antMatchers("/admin/**").authenticated()
+        .antMatchers().authenticated()
         .anyRequest().permitAll()
-        .and()
+        .and().addFilter(new JwtAuthorizationFilter(this.authenticationManager()))
         .formLogin().loginProcessingUrl(JwtConstants.USER_LOGIN_URL)
         .usernameParameter(JwtConstants.USER_LOGIN_USERNAME)
         .passwordParameter(JwtConstants.USER_LOGIN_PASSWORD)

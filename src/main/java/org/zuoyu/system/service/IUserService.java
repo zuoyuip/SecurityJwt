@@ -32,4 +32,11 @@ public interface IUserService {
    * @return - false/true
    */
   boolean isUserNameExists(String userName);
+
+  /**
+   * 根据Id获取User
+   * @param userId - Id
+   * @return - User
+   */
+  User getUserById(String userId);
 }

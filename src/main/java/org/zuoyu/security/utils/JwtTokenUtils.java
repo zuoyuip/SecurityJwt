@@ -41,9 +41,9 @@ public class JwtTokenUtils {
    * @param user - 账户
    * @return -
    */
-  public static String createToken(User user) {
+  public static String createToken(User user, boolean isRememberMe) {
     long expiration =
-        user.isRememberMe() ? JwtConstants.EXPIRATION_REMEMBER : JwtConstants.EXPIRATION;
+        isRememberMe ? JwtConstants.EXPIRATION_REMEMBER : JwtConstants.EXPIRATION;
     String spacer = ",";
     List<String> authorities = Arrays.stream(user.getRoles().split(spacer))
         .map(role -> "ROLE_" + role)
@@ -56,7 +56,7 @@ public class JwtTokenUtils {
    * 获取用户
    *
    * @param token - token
-   * @return - JwtUser
+   * @return - User
    */
   public static User getUserByToken(String token) {
     String subject = parseJwt(token).getSubject();
@@ -68,7 +68,7 @@ public class JwtTokenUtils {
    */
   public static Collection<? extends GrantedAuthority> getAuthoritiesByToken(String token) {
     String roles = parseJwt(token).get(JwtConstants.ROLE_CLAIMS).toString();
-    return JsonUtil.jsonStringToList(roles, SimpleGrantedAuthority.class);
+    return JsonUtil.jsonStringToCollection(roles, SimpleGrantedAuthority.class);
   }
 
   /**

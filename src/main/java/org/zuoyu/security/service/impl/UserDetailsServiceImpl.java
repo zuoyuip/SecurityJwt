@@ -1,11 +1,10 @@
-package org.zuoyu.security.service;
+package org.zuoyu.security.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.zuoyu.security.entity.JwtUser;
-import org.zuoyu.security.model.User;
 import org.zuoyu.system.service.IUserService;
 
 /**
@@ -15,6 +14,7 @@ import org.zuoyu.system.service.IUserService;
  * @program jwt
  * @create 2019-10-15 22:59
  **/
+@Slf4j
 @Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -26,7 +26,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-    User user = iUserService.findUserByUserName(s);
-    return new JwtUser(user);
+    return iUserService.findUserByUserName(s);
   }
 }

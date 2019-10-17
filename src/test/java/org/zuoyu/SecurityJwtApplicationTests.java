@@ -1,11 +1,8 @@
 package org.zuoyu;
 
 import java.util.Collection;
-import java.util.List;
 import org.junit.Test;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.zuoyu.security.entity.JwtUser;
 import org.zuoyu.security.model.User;
 import org.zuoyu.security.utils.JwtTokenUtils;
 

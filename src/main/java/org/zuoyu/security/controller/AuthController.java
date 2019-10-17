@@ -2,6 +2,9 @@ package org.zuoyu.security.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +31,7 @@ public class AuthController {
 
   @PostMapping("/register")
   public ResponseEntity<Result> register(User user) {
-    boolean isExists = iUserService.isUserNameExists(user.getUserName());
+    boolean isExists = iUserService.isUserNameExists(user.getUsername());
     if (isExists) {
       return ResponseEntity.status(HttpStatus.CREATED).body(Result.message("该帐号已注册"));
     }
@@ -37,5 +40,22 @@ public class AuthController {
       return ResponseEntity.ok(Result.message("注册成功"));
     }
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Result.message("注册失败"));
+  }
+
+  @GetMapping("/anonymousUser")
+  public ResponseEntity<Object> getMyselfOne() {
+    return ResponseEntity.ok(SecurityContextHolder.getContext().getAuthentication());
+  }
+
+  @PreAuthorize("isAuthenticated()")
+  @GetMapping("/authentication")
+  public ResponseEntity<Object> getMyselfTwo() {
+    return ResponseEntity.ok(SecurityContextHolder.getContext().getAuthentication());
+  }
+
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @GetMapping("/admin")
+  public ResponseEntity<Object> getMyselfThree() {
+    return ResponseEntity.ok(SecurityContextHolder.getContext().getAuthentication());
   }
 }

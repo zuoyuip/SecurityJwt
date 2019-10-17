@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -47,6 +48,24 @@ public class JsonUtil {
   public static <T> T jsonStringToBean(String jsonString, Class<T> beanType) {
     try {
       return OBJECT_MAPPER.readValue(jsonString, beanType);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+  /**
+   * Json字符串转Collection
+   * @param jsonString - Json字符串
+   * @param beanType - bean
+   * @param <T> - 类型
+   * @return - Collection<T>
+   */
+  public static <T> Collection<T> jsonStringToCollection(String jsonString, Class<T> beanType) {
+    CollectionType collectionType = OBJECT_MAPPER.getTypeFactory()
+        .constructCollectionType(Collection.class, beanType);
+    try {
+      return OBJECT_MAPPER.readValue(jsonString, collectionType);
     } catch (IOException e) {
       e.printStackTrace();
     }

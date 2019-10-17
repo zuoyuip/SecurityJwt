@@ -2,7 +2,6 @@ package org.zuoyu.system.service.impl;
 
 import org.springframework.data.domain.Example;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.zuoyu.security.model.User;
 import org.zuoyu.system.dao.UserMapper;
@@ -34,8 +33,13 @@ class UserServiceImpl implements IUserService {
     if (user == null) {
       return false;
     }
-    user.setRoles("USER").setUserStatus(true);
-    String passWord = user.getPassWord();
+    String admin = "admin";
+    if (admin.equals(user.getUsername())){
+      user.setRoles("USER,ADMIN").setUserStatus(true);
+    }else {
+      user.setRoles("USER").setUserStatus(true);
+    }
+    String passWord = user.getPassword();
     user.setPassWord(PasswordEncoderFactories.createDelegatingPasswordEncoder().encode(passWord));
     User s = userMapper.save(user);
     return user.equals(s);
@@ -45,5 +49,10 @@ class UserServiceImpl implements IUserService {
   public boolean isUserNameExists(String userName) {
     Example<User> userExample = Example.of(new User().setUserName(userName));
     return userMapper.exists(userExample);
+  }
+
+  @Override
+  public User getUserById(String userId) {
+    return userMapper.findById(userId).orElseThrow(RuntimeException::new);
   }
 }

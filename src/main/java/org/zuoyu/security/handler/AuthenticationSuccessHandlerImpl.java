@@ -25,9 +25,8 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
       Authentication authentication) throws IOException {
     String rememberMe = request.getParameter(JwtConstants.USER_LOGIN_REMEMBER_ME);
     boolean isRememberMe = Boolean.parseBoolean(rememberMe);
-    User user = (User) authentication.getPrincipal();
-    user.setRememberMe(isRememberMe);
-    String token = JwtTokenUtils.createToken(user);
+    User principal = (User) authentication.getPrincipal();
+    String token = JwtTokenUtils.createToken(principal, isRememberMe);
     response.setContentType("application/json;charset=utf-8");
     response.setHeader(JwtConstants.TOKEN_HEADER, token);
     response.setStatus(HttpServletResponse.SC_OK);
