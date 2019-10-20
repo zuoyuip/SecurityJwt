@@ -18,10 +18,10 @@
 
 ### 二、JSON Web Token
 
-* `JSON Web Token（JWT）`准确来说是一个规范。实际上就是一个字符串，它由三部分组成——头部**（`Header`）**、载荷**（`playload`）**与签名**（`signature`）**。
-* **头部（`Header`）**用于描述关于该`JWT`的最基本的信息，即该`JWT`本身的信息声明，如签名所用算法。
-* **载荷（`playload`）**是存放有效信息的地方。其中信息又分为三个部分——**声明部分**、**公共部分(`subject`)**、**私有部分(`claim`)**。
-* **签证（`signature`）**需要`base64`加密后的**`header`**和`base64`加密后的**`payload`**使用.连接组成的字符串，然后通过**`header`**中声明的加密方式进行加盐`secret`组合加密构成（**注意**：`secret`是保存在服务器端的）。
+* `JSON Web Token（JWT）`准确来说是一个规范。实际上就是一个字符串，它由三部分组成——**头部**（`Header`）**、载荷**（`playload`）**与签名**（`signature`）。
+* **头部**（`Header`）用于描述关于该`JWT`的最基本的信息，即该`JWT`本身的信息声明，如签名所用算法。
+* **载荷**（`playload`）是存放有效信息的地方。其中信息又分为三个部分——**声明部分**、**公共部分(`subject`)**、**私有部分(`claim`)**。
+* **签证**（`signature`）需要`base64`加密后的`header`和`base64`加密后的`payload`使用.连接组成的字符串，然后通过`header`中声明的加密方式进行加盐`secret`组合加密构成（**注意**：`secret`是保存在服务器端的）。
 * 在分布式中直接根据`token`取出保存的用户信息，以及对`token`可用性校验，单点登录更为简单。
 
 * ![Image of Token](https://upload-images.jianshu.io/upload_images/3383598-c82676bb8445bae9.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp)
