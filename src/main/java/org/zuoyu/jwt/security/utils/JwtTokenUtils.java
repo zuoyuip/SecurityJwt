@@ -65,6 +65,8 @@ public class JwtTokenUtils {
 
   /**
    * 获取用户的权限
+   * @param token - token
+   * @return - 权限列表
    */
   public static Collection<? extends GrantedAuthority> getAuthoritiesByToken(String token) {
     String roles = parseJwt(token).get(JwtConstants.ROLE_CLAIMS).toString();
@@ -87,7 +89,7 @@ public class JwtTokenUtils {
    * @param subject - 实体
    * @param authorities - 权限
    * @param expiration - 保留时间
-   * @return -
+   * @return - token
    */
   private static String createJwt(String subject,
       String authorities, long expiration) {
