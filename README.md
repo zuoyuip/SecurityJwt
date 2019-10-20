@@ -24,7 +24,7 @@
 * **签证（`signature`）**需要`base64`加密后的**`header`**和`base64`加密后的**`payload`**使用.连接组成的字符串，然后通过**`header`**中声明的加密方式进行加盐`secret`组合加密构成（**注意**：`secret`是保存在服务器端的）。
 * 在分布式中直接根据`token`取出保存的用户信息，以及对`token`可用性校验，单点登录更为简单。
 
-* ![Image of Yaktocat](https://upload-images.jianshu.io/upload_images/3383598-c82676bb8445bae9.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp)
+* ![Image of Token](https://upload-images.jianshu.io/upload_images/3383598-c82676bb8445bae9.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp)
 
 
 
