@@ -1,7 +1,7 @@
 # SecurityJwt
 > ### 一个基于springSecurity的Json Web Token的实现
 >
-> [GitHub地址](https://github.com/ZuoYuYouYi/SecurityJwt.git)
+> [博客地址](https://my.oschina.net/zuoyuip/blog/3119897)
 
 ---------
 
